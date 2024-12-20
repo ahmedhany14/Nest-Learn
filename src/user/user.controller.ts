@@ -11,19 +11,27 @@ import {
   ParseArrayPipe, // for converting string to array
   ParseBoolPipe, // for converting string to boolean
   ParseEnumPipe, // for converting string to enum
-} from "@nestjs/common";
+} from '@nestjs/common';
+
+import { Inject } from '@nestjs/common';
 
 // DTO
 import { CreateUserDto } from './dto/create-user.dto';
 import { GetUserParmersDto } from './dto/get-user-parmers.dto';
 import { GetUserQueryDto } from './dto/get-user-query.dto';
-import { UpdateUserDto } from "./dto/update-user.dto";
+import { UpdateUserDto } from './dto/update-user.dto';
+
+// Service
+import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
+  constructor(@Inject() private readonly userService: UserService) {}
+
   @Get('/:id')
   GetUser(@Param() params: GetUserParmersDto, @Query() query: GetUserQueryDto) {
-    return `id: ${params.id}, page: ${query.page}, limit: ${query.limit}`;
+    const result = this.userService.findAll(params, query);
+     return result;
   }
 
   @Post()
@@ -32,7 +40,7 @@ export class UserController {
   }
 
   @Patch()
-  UpdateUser(@Body() body: UpdateUserDto){
-    return body
+  UpdateUser(@Body() body: UpdateUserDto) {
+    return body;
   }
 }
