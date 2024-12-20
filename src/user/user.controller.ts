@@ -1,6 +1,8 @@
 import {
   Controller,
   Get,
+  Patch,
+  Post,
   Body,
   Param,
   Query,
@@ -8,15 +10,14 @@ import {
   DefaultValuePipe, // for default value
   ParseArrayPipe, // for converting string to array
   ParseBoolPipe, // for converting string to boolean
-  ParseEnumPipe,
-  Post, // for converting string to enum
-  ValidationPipe,
-} from '@nestjs/common';
+  ParseEnumPipe, // for converting string to enum
+} from "@nestjs/common";
 
 // DTO
 import { CreateUserDto } from './dto/create-user.dto';
 import { GetUserParmersDto } from './dto/get-user-parmers.dto';
 import { GetUserQueryDto } from './dto/get-user-query.dto';
+import { UpdateUserDto } from "./dto/update-user.dto";
 
 @Controller('user')
 export class UserController {
@@ -28,5 +29,10 @@ export class UserController {
   @Post()
   CreateUser(@Body() body: CreateUserDto) {
     return body;
+  }
+
+  @Patch()
+  UpdateUser(@Body() body: UpdateUserDto){
+    return body
   }
 }
