@@ -1,0 +1,21 @@
+### Create Post
+
+POST http://localhost:3000/post
+Content-Type: application/json
+
+{
+    "title": "Post Title",
+    "content": "Post Content",
+    "slug": "post-title" ,
+    "postType": "post",
+    "status": "published",
+    "imageUrls": "https://example.com/image.jpg",
+    "tags": ["tag1", "tag2"],
+    "schema": "{\r\n \"type\": \"object\",\r\n  \"properties\": {\r\n    \"name\": {\r\n      \"type\": \"string\"\r\n    },\r\n    \"age\": {\r\n      \"type\": \"number\"\r\n    }\r\n  }\r\n}",
+    "metadata":[ {
+        "key": "key1",
+        "value": "value1" 
+    }],
+    "publishedAt": "2021-09-01T00:00:00.000Z"
+
+}

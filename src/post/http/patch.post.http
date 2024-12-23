@@ -1,0 +1,10 @@
+### Update Posts
+
+PATCH http://localhost:3000/post/10
+Content-Type: application/json
+
+{
+    "title": "Post Title",
+    "content": "Post Content",
+    "slug": "post-title"
+}
