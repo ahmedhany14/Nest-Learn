@@ -1,21 +1,24 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
+// Modules
 import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
 import { AuthModule } from './auth/auth.module';
 
-import {
-  TypeOrmModule
-} from '@nestjs/typeorm';
+// entities
+import { User } from './user/entite/user.entitie';
 
+// TypeORM
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [UserModule, PostModule, AuthModule,
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: 'postgres',
-        entities: [],
+        entities: [User],
         synchronize: true, // This will automatically create database tables that don't exist, useful for development
         host: 'localhost',
         port: 5432,
