@@ -7,7 +7,11 @@ import { UserService } from '../user/user.service';
 // DTOs
 import { GetUserParmersDto } from './../user/dto/get-user-parmers.dto';
 
+
+// Swagger
+import { ApiTags } from '@nestjs/swagger';
 @Controller('post')
+@ApiTags('post')
 export class PostController {
   constructor(
     @Inject()

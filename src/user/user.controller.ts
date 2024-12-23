@@ -24,14 +24,23 @@ import { UpdateUserDto } from './dto/update-user.dto';
 // Service
 import { UserService } from './user.service';
 
+
+// Swagger
+import { ApiTags, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+
 @Controller('user')
+@ApiTags('user')
 export class UserController {
-  constructor(@Inject() private readonly userService: UserService) {}
+  constructor(@Inject() private readonly userService: UserService) { }
 
   @Get('/:id')
+  @ApiOperation({ summary: 'Get user by ID' })
+  @ApiQuery({ name: 'page', required: false, example: 1 })
+  @ApiQuery({ name: 'limit', required: false, example: 10 })
+  @ApiResponse({ status: 200, description: 'User found  successfully' })
   GetUser(@Param() params: GetUserParmersDto, @Query() query: GetUserQueryDto) {
     const result = this.userService.findAll(params, query);
-     return result;
+    return result;
   }
 
   @Post()
