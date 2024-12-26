@@ -2,27 +2,38 @@ import { Inject, Injectable } from '@nestjs/common';
 
 // DTOs
 import { GetUserParmersDto } from './../user/dto/get-user-parmers.dto';
+import { CreatePostsDto } from './dto/create.posts.dto';
+
+// services
 import { UserService } from '../user/user.service';
+import { MetaOptionsService } from '../meta-options/meta-options.service';
+
+// entities
+import { Post } from './entitie/post.entitie';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PostService {
   constructor(
     private readonly userService: UserService,
+    private readonly metaOptionsService: MetaOptionsService,
+    @InjectRepository(Post)
+    private readonly postRepository: Repository<Post>,
   ) {}
 
   public async getPosts(paramsDto: GetUserParmersDto) {
     const user = this.userService.findOnebyId(paramsDto.id);
 
-    const posts = [
-      {
-        user,
-        content: 'first post',
-      },
-      {
-        user,
-        content: 'second post',
-      },
-    ];
+    const posts = await this.postRepository.find({
+      relations: ['metaOptions'], // will populate the metaOptions
+    });
     return posts;
+  }
+
+  public async create(createPostsDto: CreatePostsDto) {
+    return await this.postRepository.save(
+      this.postRepository.create(createPostsDto),
+    );
   }
 }

@@ -1,7 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
 
 // enums
 import { PostType, Status } from './../dto/create.posts.dto';
+
+// entities
+import { MetaOptionsEntity } from './../../meta-options/meta-options.entity';
 
 @Entity()
 export class Post {
@@ -65,9 +68,13 @@ export class Post {
   })
   status: Status;
 
-  @Column()
-  tags: string[];
+  // @Column()
+  // tags?: string;
 
-  @Column()
-  metadata: any;
+  @OneToOne(type => MetaOptionsEntity, {
+    cascade: true,// when we save the post, it will save the metaOptions so we don't need to save it separately
+    eager: true, // when we fetch the post, it will fetch the metaOptions so we don't need to fetch it separately
+  })
+  @JoinColumn() // used in one-to-one relationship
+  metaOptions: MetaOptionsEntity;
 }

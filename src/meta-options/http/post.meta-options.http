@@ -1,0 +1,8 @@
+### Create META-OPTIONS for POST
+
+POST http://localhost:3000/meta-options
+content-type: application/json
+
+{
+  "value": "{\"sideBarEnable\": \"true\", \"sideBarTheme\": \"dark\", \"topBarTheme\": \"light\"}",
+}
