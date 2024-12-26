@@ -12,8 +12,8 @@ import {
     IsUrl,
     IsISO8601,
     Min,
-    ValidateNested
-} from 'class-validator';
+    ValidateNested, MaxLength
+} from "class-validator";
 
 
 import {
@@ -29,7 +29,7 @@ export enum PostType {
 
 export enum Status {
     Draft = 'draft',
-    Scaduled = 'scaduled',
+    Scheduled = 'Scheduled',
     Published = 'published',
     Review = 'review',
 }
@@ -53,6 +53,7 @@ export class CreatePostsDto {
     @IsString()
     @IsNotEmpty()
     @MinLength(6)
+    @MaxLength(255)
     title: string;
 
     @ApiProperty({
@@ -85,6 +86,7 @@ export class CreatePostsDto {
     })
     @IsString()
     @IsNotEmpty()
+    @MaxLength(255)
     @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/,
         {
             message: 'Slug must be all small letters and hyphen separated, like: my-first-post'
@@ -111,6 +113,7 @@ export class CreatePostsDto {
     @IsUrl()
     @IsNotEmpty()
     @IsOptional()
+    @MaxLength(1024)
     imageUrls: string;
 
     @ApiProperty({

@@ -12,6 +12,8 @@ import { User } from './user/entite/user.entitie';
 
 // TypeORM
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TagsModule } from './tags/tags.module';
+import { MetaOptionsModule } from './meta-options/meta-options.module';
 
 @Module({
   imports: [UserModule, PostModule, AuthModule,
@@ -26,7 +28,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         password: 'new_password',
         database: "nest-learn"
       })
-    })
+    }),
+    TagsModule,
+    MetaOptionsModule
   ],
   controllers: [AppController],
   providers: [AppService],
