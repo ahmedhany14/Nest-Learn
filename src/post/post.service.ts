@@ -36,4 +36,21 @@ export class PostService {
       this.postRepository.create(createPostsDto),
     );
   }
+
+  public async delete(id: number) {
+    // get the post
+    const post = await this.postRepository.findOne({ where: { id },
+      relations: ['metaOptions'], // will populate the metaOptions
+    });
+    // delete the post
+   await this.postRepository.delete({ id });
+    // delete the metaOptions
+    await this.metaOptionsService.delete(post.metaOptions.id);
+    // response
+    return {
+      message: 'Post deleted successfully',
+      postId: id,
+      metaOptionsId: post.metaOptions.id,
+    };
+  }
 }

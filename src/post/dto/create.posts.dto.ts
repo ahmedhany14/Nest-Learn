@@ -158,5 +158,5 @@ export class CreatePostsDto {
   // Validate nested DTOs
   @Type(() => MetaOptionsDto) // this is used to tell the class-transformer to use the Metadata class to transform the nested object
   @IsOptional()
-  metadata: MetaOptionsDto | null;
+  metaOptions: MetaOptionsDto | null;
 }

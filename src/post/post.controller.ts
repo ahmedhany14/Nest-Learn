@@ -1,12 +1,12 @@
 import {
   Body,
-  Controller,
+  Controller, Delete,
   Get,
   Inject,
-  Param,
+  Param, ParseIntPipe,
   Patch,
-  Post,
-} from '@nestjs/common';
+  Post, Query
+} from "@nestjs/common";
 
 // DI
 import { PostService } from './post.service';
@@ -57,4 +57,11 @@ export class PostController {
   UpdatePost(@Body() body: UpdatePostsDto, @Param('id') id: string) {
     return body;
   }
+
+  @ApiQuery({ name: 'id', type: String, required: true, example: '1' })
+  @Delete()
+  DeletePost(@Query('id', ParseIntPipe) id: number) {
+    return this.postService.delete(id);
+  }
+
 }

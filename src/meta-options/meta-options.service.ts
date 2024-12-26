@@ -18,4 +18,11 @@ export class MetaOptionsService {
     const metaOptions = this.metaOptionsRepository.create(metaOptionsDto);
     return await this.metaOptionsRepository.save(metaOptions);
   }
+
+  public async delete(id: number) {
+    // get the metaOptions
+    const metaOptions = this.metaOptionsRepository.findOne({ where: { id } });
+    // delete the metaOptions
+    await this.metaOptionsRepository.delete({ id });
+  }
 }
