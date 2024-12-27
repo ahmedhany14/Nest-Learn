@@ -9,6 +9,7 @@ import { PostService } from './post.service';
 // modules
 import {UserModule} from "../user/user.module";
 import { MetaOptionsModule } from "../meta-options/meta-options.module";
+import { TagsModule } from '../tags/tags.module';
 
 // entities
 import { Post } from './entitie/post.entitie';
@@ -16,6 +17,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   controllers: [PostController],
   providers: [PostService],
-  imports: [UserModule, TypeOrmModule.forFeature([Post]), MetaOptionsModule],
+  imports: [UserModule, TypeOrmModule.forFeature([Post]), MetaOptionsModule, TagsModule],
 })
 export class PostModule {}

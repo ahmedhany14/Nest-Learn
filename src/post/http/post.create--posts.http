@@ -4,9 +4,9 @@ POST http://localhost:6000/post
 Content-Type: application/json
 
 {
-  "title": "test bidirectional",
-  "content": "test bidirectional",
-  "slug": "test-bidirectional",
+  "title": "test bidirectional2",
+  "content": "test bidirectional2",
+  "slug": "test-bidirectional2",
   "postType": "post",
   "status": "published",
   "imageUrls": "https://example.com/image.jpg",
@@ -15,5 +15,6 @@ Content-Type: application/json
     "value": "{\"sideBarEnable\": \"true\", \"sideBarTheme\": \"dark\", \"topBarTheme\": \"light\"}"
   },
   "publishedAt": "2021-09-01T00:00:00.000Z",
-  "authorId": 1
+  "authorId": 1,
+  "tags": [1, 2]
 }

@@ -1,0 +1,12 @@
+### CREATE TAGS
+
+POST http://localhost:6000/tags
+content-type: application/json
+
+{
+  "name": "test tag2",
+  "slug": "test-tag2",
+  "description": "test tag description",
+  "schema": "http://localhost:3000/schemas/5f5f3b3b7f3b9b001f3b9b00",
+  "imageUrls": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+}

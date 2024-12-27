@@ -13,12 +13,18 @@ import {
   IsISO8601,
   Min,
   ValidateNested,
-  MaxLength, IsNumber
-} from "class-validator";
+  MaxLength,
+  IsNumber,
+  IsInt,
+} from 'class-validator';
+
+import { Transform } from 'class-transformer'
+
 
 import { ApiProperty } from '@nestjs/swagger';
 
-import { MetaOptionsDto } from './../../meta-options/dtos/meta-options.dto';
+import { MetaOptionsDto } from "../../meta-options/dtos/meta-options.dto";
+import { Tags } from '../../tags/tags.entity';
 
 export enum PostType {
   Post = 'post',
@@ -128,20 +134,6 @@ export class CreatePostsDto {
   publishedAt: Date;
 
   @ApiProperty({
-    description: 'The tags of the post',
-    type: [String],
-    required: true,
-    example: ['tag1', 'tag2'],
-  })
-
-  /*
-  @IsArray()
-  @IsNotEmpty()
-  @IsString({ each: true }) // each: true means each element of the array should be a string
-  @MinLength(3, { each: true })
-  tags: string[];
-*/
-  @ApiProperty({
     description: 'The metadata of the post',
     required: false,
     items: {
@@ -170,4 +162,14 @@ export class CreatePostsDto {
   @Min(1)
   @IsNumber()
   authorId: number;
+
+  @ApiProperty({
+    description: 'The tags of the post',
+    example: [1, 2, 3],
+  })
+   @IsOptional()
+  @IsArray()
+  @IsInt({ each: true }) // each: true means each element of the array should be a string
+  tags?: number[];
+
 }

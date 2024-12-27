@@ -47,7 +47,6 @@ export class UserService {
   }
 
   public async findOnebyId(id: number) {
-    console.log(id);
     return await this.userRepository.findOne({
       where: { id },
     });

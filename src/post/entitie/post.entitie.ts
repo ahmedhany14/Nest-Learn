@@ -1,11 +1,21 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, ManyToOne,  } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 
 // enums
-import { PostType, Status } from "../dto/create.posts.dto";
+import { PostType, Status } from '../dto/create.posts.dto';
 
 // entities
-import { MetaOptionsEntity } from "../../meta-options/meta-options.entity";
-import { User } from "../../user/entite/user.entitie";
+import { MetaOptionsEntity } from '../../meta-options/meta-options.entity';
+import { User } from '../../user/entite/user.entitie';
+import { Tags } from '../../tags/tags.entity';
+
 
 @Entity()
 export class Post {
@@ -69,23 +79,24 @@ export class Post {
   })
   status: Status;
 
-  // @Column()
-  // tags?: string;
 
-  @OneToOne(() => MetaOptionsEntity
-    ,
-    (metaOptions) => metaOptions.post // Bidirectional relationship with MetaOptionsEntity
-    ,
+  @OneToOne(
+    () => MetaOptionsEntity,
+    (metaOptions) => metaOptions.post, // Bidirectional relationship with MetaOptionsEntity
     {
-    cascade: true,// when we save the post, it will save the metaOptions so we don't need to save it separately
-    eager: true, // when we fetch the post, it will fetch the metaOptions so we don't need to fetch it separately
-  })
-//  @JoinColumn() // used in one-to-one relationship
+      cascade: true, // when we save the post, it will save the metaOptions so we don't need to save it separately
+      eager: true, // when we fetch the post, it will fetch the metaOptions so we don't need to fetch it separately
+    },
+  )
+  //  @JoinColumn() // used in one-to-one relationship
   metaOptions: MetaOptionsEntity;
-
 
   @ManyToOne(() => User, (user) => user.posts, {
     //eager: true, // when we fetch the post, it will fetch the author so we don't need to fetch it separately
   })
   author: User;
+
+  @ManyToMany(() => Tags)
+  @JoinTable()
+  tags?: Tags[];
 }
