@@ -4,9 +4,9 @@ POST http://localhost:6000/post
 Content-Type: application/json
 
 {
-  "title": "test cascade2",
-  "content": "test cascade2",
-  "slug": "test-cascade2",
+  "title": "test bidirectional",
+  "content": "test bidirectional",
+  "slug": "test-bidirectional",
   "postType": "post",
   "status": "published",
   "imageUrls": "https://example.com/image.jpg",

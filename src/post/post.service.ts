@@ -38,19 +38,18 @@ export class PostService {
   }
 
   public async delete(id: number) {
-    // get the post
-    const post = await this.postRepository.findOne({ where: { id },
-      relations: ['metaOptions'], // will populate the metaOptions
-    });
+    // const post = await this.postRepository.findOne({ where: { id },
+    //   relations: ['metaOptions'], // will populate the metaOptions
+    // });
     // delete the post
    await this.postRepository.delete({ id });
-    // delete the metaOptions
-    await this.metaOptionsService.delete(post.metaOptions.id);
-    // response
+
+   // Because of the onDelete: "CASCADE" in the MetaOptionsEntity, the metaOptions will also be deleted automatically
+   //  await this.metaOptionsService.delete(post.metaOptions.id); // delete the metaOptions
+
     return {
       message: 'Post deleted successfully',
       postId: id,
-      metaOptionsId: post.metaOptions.id,
     };
   }
 }

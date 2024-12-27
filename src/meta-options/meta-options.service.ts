@@ -19,6 +19,9 @@ export class MetaOptionsService {
     return await this.metaOptionsRepository.save(metaOptions);
   }
 
+  public async findOne(id: number) {
+    return await this.metaOptionsRepository.findOne({ where: { id }, relations: ['post'] });
+  }
   public async delete(id: number) {
     // get the metaOptions
     const metaOptions = this.metaOptionsRepository.findOne({ where: { id } });
