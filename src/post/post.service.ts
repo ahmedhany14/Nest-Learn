@@ -13,6 +13,7 @@ import { TagsService } from '../tags/tags.service';
 import { Post } from './entitie/post.entitie';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { UpdatePostsDto } from './dto/update.posts.dto';
 
 @Injectable()
 export class PostService {
@@ -44,6 +45,25 @@ export class PostService {
         tags: tags,
       }),
     );
+  }
+
+  public async update(patchPostDto: UpdatePostsDto) {
+    const tags = await this.tagsService.getTags(patchPostDto.tags);
+
+    const post = await this.postRepository.findOne({
+      where: { id: patchPostDto.id },
+    });
+
+    if (tags.length > 0) post.tags = tags;
+
+    post.title = patchPostDto.title ?? post.title;
+    post.content = patchPostDto.content ?? post.content;
+    post.slug = patchPostDto.slug ?? post.slug;
+    post.imageUrls = patchPostDto.imageUrls ?? post.imageUrls;
+    post.schema = patchPostDto.schema ?? post.schema;
+    post.status = patchPostDto.status ?? post.status;
+
+    return await this.postRepository.save(post);
   }
 
   public async delete(id: number) {

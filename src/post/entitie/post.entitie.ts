@@ -96,7 +96,7 @@ export class Post {
   })
   author: User;
 
-  @ManyToMany(() => Tags)
+  @ManyToMany(() => Tags, (tags) => tags.post)
   @JoinTable()
   tags?: Tags[];
 }

@@ -1,10 +1,14 @@
 ### Update Posts
 
-PATCH http://localhost:3000/post/10
+PATCH http://localhost:3000/post
 Content-Type: application/json
 
 {
-    "title": "Post Title",
-    "content": "Post Content",
-    "slug": "post-title"
+  "title": "Post Title",
+  "content": "Post Content",
+  "slug": "post-title",
+  "id": 6,
+  "tags": [
+    2, 3, 1
+  ]
 }

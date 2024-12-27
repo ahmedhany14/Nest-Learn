@@ -6,11 +6,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true, // remove any other properties that are not in the DTO
-    forbidNonWhitelisted: true, // throw an error if there are extra properties
-    transform: true, // transform the incoming data to match
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // remove any other properties that are not in the DTO
+      forbidNonWhitelisted: true, // throw an error if there are extra properties
+      transform: true, // transform the incoming data to match
+    }),
+  );
 
   // Swagger Configuration
 
@@ -25,6 +27,9 @@ async function bootstrap() {
 
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(process.env.PORT ?? 6000);
+  await app.listen(process.env.PORT ?? 3000);
 }
-bootstrap();
+
+bootstrap().then((r) =>
+  console.log('Server is running on http://localhost:3000'),
+);

@@ -53,9 +53,9 @@ export class PostController {
 
   @ApiBody({ type: UpdatePostsDto })
   @ApiParam({ name: 'id', type: String, required: true, example: '1' })
-  @Patch('/:id')
-  UpdatePost(@Body() body: UpdatePostsDto, @Param('id') id: string) {
-    return body;
+  @Patch()
+  UpdatePost(@Body() updatePostsDto: UpdatePostsDto) {
+    return this.postService.update(updatePostsDto);
   }
 
   @ApiQuery({ name: 'id', type: String, required: true, example: '1' })
