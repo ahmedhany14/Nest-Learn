@@ -26,7 +26,7 @@ export class UserService {
         email: createUserDto.email,
       },
     });
-     if (user) throw new BadRequestException('User already exists');
+    if (user) throw new BadRequestException('User already exists');
 
     let newUser = await this.userRepository.create(createUserDto);
     newUser = await this.userRepository.save(newUser);
@@ -46,10 +46,10 @@ export class UserService {
     ];
   }
 
-  public findOnebyId(id: number) {
-    return {
-      name: 'user 1',
-      email: 'user1@gmail.com',
-    };
+  public async findOnebyId(id: number) {
+    console.log(id);
+    return await this.userRepository.findOne({
+      where: { id },
+    });
   }
 }

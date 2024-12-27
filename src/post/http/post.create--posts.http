@@ -14,5 +14,6 @@ Content-Type: application/json
   "metaOptions": {
     "value": "{\"sideBarEnable\": \"true\", \"sideBarTheme\": \"dark\", \"topBarTheme\": \"light\"}"
   },
-  "publishedAt": "2021-09-01T00:00:00.000Z"
+  "publishedAt": "2021-09-01T00:00:00.000Z",
+  "authorId": 1
 }

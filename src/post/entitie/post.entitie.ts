@@ -1,10 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, ManyToOne,  } from 'typeorm';
 
 // enums
 import { PostType, Status } from "../dto/create.posts.dto";
 
 // entities
 import { MetaOptionsEntity } from "../../meta-options/meta-options.entity";
+import { User } from "../../user/entite/user.entitie";
 
 @Entity()
 export class Post {
@@ -81,4 +82,10 @@ export class Post {
   })
 //  @JoinColumn() // used in one-to-one relationship
   metaOptions: MetaOptionsEntity;
+
+
+  @ManyToOne(() => User, (user) => user.posts, {
+    //eager: true, // when we fetch the post, it will fetch the author so we don't need to fetch it separately
+  })
+  author: User;
 }

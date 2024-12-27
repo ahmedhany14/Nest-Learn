@@ -2,10 +2,14 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
+    OneToMany,
     CreateDateColumn,
     UpdateDateColumn,
 } from "typeorm";
 
+// entity
+
+import { Post } from "../../post/entitie/post.entitie";
 
 @Entity()
 export class User {
@@ -34,4 +38,8 @@ export class User {
         nullable: false
     })
     password: string
+
+    @OneToMany(() => Post, post => post.author)
+    posts: Post[]
+
 }

@@ -13,8 +13,8 @@ import {
   IsISO8601,
   Min,
   ValidateNested,
-  MaxLength,
-} from 'class-validator';
+  MaxLength, IsNumber
+} from "class-validator";
 
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -159,4 +159,15 @@ export class CreatePostsDto {
   @Type(() => MetaOptionsDto) // this is used to tell the class-transformer to use the Metadata class to transform the nested object
   @IsOptional()
   metaOptions: MetaOptionsDto | null;
+
+  @ApiProperty({
+    description: 'The author id of the post',
+    type: Number,
+    required: true,
+    example: 1,
+  })
+  @IsNotEmpty()
+  @Min(1)
+  @IsNumber()
+  authorId: number;
 }

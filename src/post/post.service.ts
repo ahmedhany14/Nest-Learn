@@ -26,14 +26,16 @@ export class PostService {
     const user = this.userService.findOnebyId(paramsDto.id);
 
     const posts = await this.postRepository.find({
-      relations: ['metaOptions'], // will populate the metaOptions
+      relations: ['metaOptions', "author"], // will populate the metaOptions and author
     });
     return posts;
   }
 
   public async create(createPostsDto: CreatePostsDto) {
+    const user = await this.userService.findOnebyId(createPostsDto.authorId);
+
     return await this.postRepository.save(
-      this.postRepository.create(createPostsDto),
+      this.postRepository.create({ ...createPostsDto, author: user }),
     );
   }
 
@@ -42,10 +44,10 @@ export class PostService {
     //   relations: ['metaOptions'], // will populate the metaOptions
     // });
     // delete the post
-   await this.postRepository.delete({ id });
+    await this.postRepository.delete({ id });
 
-   // Because of the onDelete: "CASCADE" in the MetaOptionsEntity, the metaOptions will also be deleted automatically
-   //  await this.metaOptionsService.delete(post.metaOptions.id); // delete the metaOptions
+    // Because of the onDelete: "CASCADE" in the MetaOptionsEntity, the metaOptions will also be deleted automatically
+    //  await this.metaOptionsService.delete(post.metaOptions.id); // delete the metaOptions
 
     return {
       message: 'Post deleted successfully',
