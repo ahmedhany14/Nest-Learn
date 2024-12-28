@@ -56,7 +56,7 @@ export class UserController {
   }
 
   @Post('/create-many')
-  public async CreateManyUsers(@Body('users') users: CreateManyUsersDto) {
+  public async CreateManyUsers(@Body() users: CreateManyUsersDto) {
     const createdUsers = await this.userService.createManyUsers(users);
     return createdUsers;
   }

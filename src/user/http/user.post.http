@@ -19,12 +19,12 @@ Content-Type: application/json
   "users": [
     {
       "name": "test transaction 1",
-      "email": "tansaction3@gmail.com",
+      "email": "tansaction5@gmail.com",
       "password": "123456789"
     },
     {
       "name": "test transaction 2",
-      "email": "tansaction4@gmail.com",
+      "email": "tansaction6@gmail.com",
       "password": "123456789"
     }
   ]
