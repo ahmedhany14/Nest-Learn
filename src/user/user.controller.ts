@@ -20,6 +20,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { GetUserParmersDto } from './dto/get-user-parmers.dto';
 import { GetUserQueryDto } from './dto/get-user-query.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateManyUsersDto } from './dto/create-many-users.dto';
 
 // Service
 import { UserService } from './services/user.service';
@@ -55,7 +56,7 @@ export class UserController {
   }
 
   @Post('/create-many')
-  public async CreateManyUsers(@Body('users') users: CreateUserDto[]) {
+  public async CreateManyUsers(@Body('users') users: CreateManyUsersDto) {
     const createdUsers = await this.userService.createManyUsers(users);
     return createdUsers;
   }

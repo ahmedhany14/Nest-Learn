@@ -14,6 +14,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { BadRequestException, RequestTimeoutException } from '@nestjs/common';
 import { CustomError } from '../../common/custom.error';
 import { UserCreateManyServiceService } from './user-create-many.service.service';
+import { CreateManyUsersDto } from '../dto/create-many-users.dto';
 
 @Injectable()
 export class UserService {
@@ -102,7 +103,7 @@ export class UserService {
     return user;
   }
 
-  public async createManyUsers(users: CreateUserDto[]) {
+  public async createManyUsers(users: CreateManyUsersDto) {
     return await this.userCreateManyServiceService.createManyUsers(users);
   }
 }
