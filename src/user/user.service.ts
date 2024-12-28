@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 // Dto
 import { GetUserQueryDto } from './dto/get-user-query.dto';
@@ -11,7 +11,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 
 // Exceptions
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, RequestTimeoutException } from '@nestjs/common';
+import { CustomError } from '../common/custom.error';
 
 @Injectable()
 export class UserService {
@@ -21,19 +22,49 @@ export class UserService {
   ) {}
 
   public async create(createUserDto: CreateUserDto) {
-    const user = await this.userRepository.findOne({
-      where: {
-        email: createUserDto.email,
-      },
-    });
-    if (user) throw new BadRequestException('User already exists');
+    let user = undefined;
+    try {
+      user = await this.userRepository.findOne({
+        where: { email: createUserDto.email },
+      });
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Request timeout',
+        'The request to create a user has timed out',
+      );
+    }
+    if (user)
+      throw new BadRequestException('User already exists', {
+        description: 'The email is already in use',
+      });
 
-    let newUser = await this.userRepository.create(createUserDto);
-    newUser = await this.userRepository.save(newUser);
+    let newUser = this.userRepository.create(createUserDto);
+
+    try {
+      newUser = await this.userRepository.save(newUser);
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'unable to process the request, try again later',
+        {
+          description: 'The user could not be created',
+        },
+      );
+    }
+
     return newUser;
   }
 
   public findAll(getUserDto: GetUserParmersDto, queryDto: GetUserQueryDto) {
+    // Use of custom error
+    throw new HttpException(
+      new CustomError(
+        HttpStatus.MOVED_PERMANENTLY,
+        'Invalid query parameters',
+        'The query parameters are invalid',
+      ),
+      HttpStatus.MOVED_PERMANENTLY,
+    );
+
     return [
       {
         name: 'user 1',
@@ -47,8 +78,23 @@ export class UserService {
   }
 
   public async findOnebyId(id: number) {
-    return await this.userRepository.findOne({
-      where: { id },
-    });
+    let user = undefined;
+    try {
+      user = await this.userRepository.findOne({
+        where: { id },
+      });
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'unable to process the request, try again later',
+        'The request to create a user has timed out',
+      );
+    }
+
+    if (!user)
+      throw new BadRequestException('User not found', {
+        description: 'The user with the given id was not found',
+      });
+
+    return user;
   }
 }

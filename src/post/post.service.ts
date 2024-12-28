@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 
 // DTOs
 import { GetUserParmersDto } from '../user/dto/get-user-parmers.dto';
@@ -14,6 +14,9 @@ import { Post } from './entitie/post.entitie';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdatePostsDto } from './dto/update.posts.dto';
+
+// Exceptions
+import { RequestTimeoutException } from '@nestjs/common';
 
 @Injectable()
 export class PostService {
@@ -48,13 +51,33 @@ export class PostService {
   }
 
   public async update(patchPostDto: UpdatePostsDto) {
-    const tags = await this.tagsService.getTags(patchPostDto.tags);
+    let post = undefined;
+    let tags = undefined;
 
-    const post = await this.postRepository.findOne({
-      where: { id: patchPostDto.id },
-    });
+    try {
+      tags = await this.tagsService.getTags(patchPostDto.tags);
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Request timeout',
+        'The request to get tags has timed out',
+      );
+    }
+    try {
+      post = await this.postRepository.findOne({
+        where: { id: patchPostDto.id },
+      });
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Post not found',
+        'The post with the given id was not found',
+      );
+    }
 
-    if (tags.length > 0) post.tags = tags;
+    if (!post || tags.length !== patchPostDto.tags.length) {
+      throw new BadRequestException('Invalid data', {
+        description: 'The post or tags with the given id was not found',
+      });
+    }
 
     post.title = patchPostDto.title ?? post.title;
     post.content = patchPostDto.content ?? post.content;
@@ -62,6 +85,7 @@ export class PostService {
     post.imageUrls = patchPostDto.imageUrls ?? post.imageUrls;
     post.schema = patchPostDto.schema ?? post.schema;
     post.status = patchPostDto.status ?? post.status;
+    post.tags = tags;
 
     return await this.postRepository.save(post);
   }
