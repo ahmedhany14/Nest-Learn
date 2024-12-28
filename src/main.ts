@@ -20,16 +20,16 @@ async function bootstrap() {
     .setVersion('1.0')
     .setTitle('NestJS API')
     .setDescription('The NestJS API description')
-    .addServer('http://localhost:3000')
+    .addServer(`http://localhost:${process.env.PORT ?? 3000}`)
     .addApiKey({ type: 'apiKey', in: 'header', name: 'Authorization' })
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT);
 }
 
-bootstrap().then((r) =>
-  console.log('Server is running on http://localhost:3000'),
-);
+bootstrap().then(() => {
+  console.log(`Server is running on http://localhost:${process.env.PORT}`);
+});

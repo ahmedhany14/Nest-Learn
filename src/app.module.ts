@@ -1,3 +1,5 @@
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -18,22 +20,37 @@ import { MetaOptionsEntity } from './meta-options/meta-options.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TagsModule } from './tags/tags.module';
 
+// Configuration
+import databaseConfig from "./config/database.config";
+import appConfig from './config/app.config';
+
+const env = process.env.NODE_ENV;
+
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // make the configuration global in all the app
+      envFilePath: `.env.${env}`,
+      load: [appConfig, databaseConfig], // load the appConfig function to use it in the configuration
+    }),
     UserModule,
     PostModule,
     AuthModule,
     TypeOrmModule.forRootAsync({
-      useFactory: () => ({
+      imports: [ConfigModule], // import the ConfigModule to use the ConfigService
+      inject: [ConfigService], // inject the ConfigService to use it in the factory function
+      useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         // entities: [User, Post, Tags, MetaOptionsEntity],
-        autoLoadEntities: true,
-        synchronize: true, // This will automatically create database tables that don't exist, useful for development
-        host: 'localhost',
-        port: 5432,
-        username: 'postgres',
-        password: 'new_password',
-        database: 'nest-learn',
+        autoLoadEntities: configService.get<boolean>(
+          'DATABASE_AUTO_LOAD_ENTITIES',
+        ),
+        synchronize: configService.get<boolean>('database.synchronize'),
+        host: configService.get<string>('database.host'),
+        port: configService.get<number>('database.port'),
+        username: configService.get<string>('database.username'),
+        password: configService.get<string>('database.password'),
+        database: configService.get<string>('database.name'),
       }),
     }),
     TagsModule,
