@@ -22,7 +22,7 @@ import { GetUserQueryDto } from './dto/get-user-query.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 // Service
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 
 
 // Swagger
@@ -52,5 +52,11 @@ export class UserController {
   @Patch()
   UpdateUser(@Body() body: UpdateUserDto) {
     return body;
+  }
+
+  @Post('/create-many')
+  public async CreateManyUsers(@Body('users') users: CreateUserDto[]) {
+    const createdUsers = await this.userService.createManyUsers(users);
+    return createdUsers;
   }
 }

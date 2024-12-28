@@ -10,7 +10,7 @@ import {
 
 // DI
 import { PostService } from './post.service';
-import { UserService } from '../user/user.service';
+import { UserService } from '../user/services/user.service';
 
 // DTOs
 import { GetUserParmersDto } from './../user/dto/get-user-parmers.dto';
@@ -32,7 +32,7 @@ export class PostController {
   constructor(
     @Inject()
     private readonly postService: PostService,
-  ) {}
+  ) { }
 
   @Get('/:id')
   GetUserPosts(@Param() params: GetUserParmersDto) {

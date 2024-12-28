@@ -5,7 +5,7 @@ import { GetUserParmersDto } from '../user/dto/get-user-parmers.dto';
 import { CreatePostsDto } from './dto/create.posts.dto';
 
 // services
-import { UserService } from '../user/user.service';
+import { UserService } from '../user/services/user.service';
 import { MetaOptionsService } from '../meta-options/meta-options.service';
 import { TagsService } from '../tags/tags.service';
 
@@ -26,7 +26,7 @@ export class PostService {
     private readonly tagsService: TagsService,
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
-  ) {}
+  ) { }
 
   public async getPosts(paramsDto: GetUserParmersDto) {
     const user = this.userService.findOnebyId(paramsDto.id);

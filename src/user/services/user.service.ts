@@ -1,25 +1,29 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 
 // Dto
-import { GetUserQueryDto } from './dto/get-user-query.dto';
-import { GetUserParmersDto } from './dto/get-user-parmers.dto';
+import { GetUserQueryDto } from '../dto/get-user-query.dto';
+import { GetUserParmersDto } from '../dto/get-user-parmers.dto';
 
 // Repository
-import { User } from './entite/user.entitie';
+import { User } from '../entite/user.entitie';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from '../dto/create-user.dto';
 
 // Exceptions
 import { BadRequestException, RequestTimeoutException } from '@nestjs/common';
-import { CustomError } from '../common/custom.error';
+import { CustomError } from '../../common/custom.error';
+import { UserCreateManyServiceService } from './user-create-many.service.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) {}
+
+    @Inject()
+    private readonly userCreateManyServiceService: UserCreateManyServiceService,
+  ) { }
 
   public async create(createUserDto: CreateUserDto) {
     let user = undefined;
@@ -96,5 +100,9 @@ export class UserService {
       });
 
     return user;
+  }
+
+  public async createManyUsers(users: CreateUserDto[]) {
+    return await this.userCreateManyServiceService.createManyUsers(users);
   }
 }
