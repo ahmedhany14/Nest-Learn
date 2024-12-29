@@ -16,6 +16,8 @@ import { UserService } from '../user/services/user.service';
 import { GetUserParmersDto } from './../user/dto/get-user-parmers.dto';
 import { CreatePostsDto } from './dto/create.posts.dto';
 import { UpdatePostsDto } from './dto/update.posts.dto';
+import { GetPostsQueryDto } from './dto/get.posts.query.dto';
+
 // Swagger
 import {
   ApiBody,
@@ -35,9 +37,8 @@ export class PostController {
   ) { }
 
   @Get('/:id')
-  GetUserPosts(@Param() params: GetUserParmersDto) {
-    console.log(params);
-    return this.postService.getPosts(params);
+  GetUserPosts(@Param() params: GetUserParmersDto, @Query() getPostsQueryDto: GetPostsQueryDto) {
+    return this.postService.getPosts(params, getPostsQueryDto);
   }
 
   @ApiBody({ type: CreatePostsDto })

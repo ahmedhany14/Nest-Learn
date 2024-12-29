@@ -129,7 +129,7 @@ export class CreatePostsDto {
     required: true,
     example: '2021-07-01T00:00:00.000Z',
   })
-  @IsISO8601()
+  @IsDate()
   @IsNotEmpty()
   publishedAt: Date;
 

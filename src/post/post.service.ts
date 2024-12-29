@@ -8,6 +8,7 @@ import { CreatePostsDto } from './dto/create.posts.dto';
 import { UserService } from '../user/services/user.service';
 import { MetaOptionsService } from '../meta-options/meta-options.service';
 import { TagsService } from '../tags/tags.service';
+import { PaginationService } from 'src/common/pagination/pagination.service';
 
 // entities
 import { Post } from './entitie/post.entitie';
@@ -17,6 +18,7 @@ import { UpdatePostsDto } from './dto/update.posts.dto';
 
 // Exceptions
 import { RequestTimeoutException } from '@nestjs/common';
+import { GetPostsQueryDto } from './dto/get.posts.query.dto';
 
 @Injectable()
 export class PostService {
@@ -24,16 +26,20 @@ export class PostService {
     private readonly userService: UserService,
     private readonly metaOptionsService: MetaOptionsService,
     private readonly tagsService: TagsService,
+    private readonly paginationService: PaginationService,
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
   ) { }
 
-  public async getPosts(paramsDto: GetUserParmersDto) {
+  public async getPosts(paramsDto: GetUserParmersDto, getPostsQueryDto: GetPostsQueryDto) {
     const user = this.userService.findOnebyId(paramsDto.id);
 
-    const posts = await this.postRepository.find({
-      relations: ['metaOptions', 'author', 'tags'], // will populate the metaOptions and author
-    });
+    const posts = await this.paginationService.PaginateQuety(
+      getPostsQueryDto,
+      this.postRepository,
+    )
+
+
     return posts;
   }
 

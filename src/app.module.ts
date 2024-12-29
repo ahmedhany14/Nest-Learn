@@ -19,6 +19,7 @@ import { MetaOptionsEntity } from './meta-options/meta-options.entity';
 // TypeORM
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TagsModule } from './tags/tags.module';
+import { PaginationModule } from './common/pagination/pagination.module';
 
 // Configuration
 import databaseConfig from "./config/database.config";
@@ -55,6 +56,7 @@ const env = process.env.NODE_ENV;
     }),
     TagsModule,
     MetaOptionsModule,
+    PaginationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
