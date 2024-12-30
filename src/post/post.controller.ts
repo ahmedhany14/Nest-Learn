@@ -27,6 +27,8 @@ import {
   ApiQuery,
   ApiParam,
 } from '@nestjs/swagger';
+import { ActiveUser } from "../auth/decorators/active-user.decorator";
+import { ActiveUserInterface } from "../auth/interfaces/active-user.interface";
 
 @Controller('post')
 @ApiTags('post')
@@ -48,7 +50,7 @@ export class PostController {
   })
   @ApiOperation({ summary: 'Create a new post' })
   @Post()
-  CreatePost(@Body() createPostsDto: CreatePostsDto) {
+  CreatePost(@Body() createPostsDto: CreatePostsDto, @ActiveUser() user: ActiveUserInterface) {
     return this.postService.create(createPostsDto);
   }
 

@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 
 // Dto
 import { SignInDto } from '../dto/sign-in.dto';
+import { ActiveUserInterface } from "../interfaces/active-user.interface";
 
 // Exceptions
 import { BadRequestException, RequestTimeoutException } from '@nestjs/common';
@@ -50,7 +51,7 @@ export class AuthService {
         // payload
         id: user.id,
         email: user.email,
-      },
+      } as ActiveUserInterface,
       {
         // options
         secret: this.jwtConfiguration.secret,
