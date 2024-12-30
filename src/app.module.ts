@@ -26,6 +26,7 @@ import databaseConfig from "./config/database.config";
 import appConfig from './config/app.config';
 import jwtConfig from "./auth/config/jwt.config";
 import { JwtModule } from "@nestjs/jwt";
+import validationSchema from "./config/env.validation";
 
 const env = process.env.NODE_ENV;
 
@@ -35,6 +36,7 @@ const env = process.env.NODE_ENV;
       isGlobal: true, // make the configuration global in all the app
       envFilePath: `.env.${env}`,
       load: [appConfig, databaseConfig], // load the appConfig function to use it in the configuration
+      validationSchema: validationSchema // validate the configuration
     }),
     UserModule,
     PostModule,
