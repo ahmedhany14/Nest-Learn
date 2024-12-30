@@ -28,19 +28,12 @@ import { AccessTokenGuard } from "../auth/guards/access-token.guard";
 
 @Module({
   controllers: [UserController],
-  providers: [UserService, UserCreateManyServiceService, CreateUserServiceService,
-    { // Guard will be applied to all routes in the module
-    provide: APP_GUARD,
-    useClass: AccessTokenGuard,
-  }
-  ],
+  providers: [UserService, UserCreateManyServiceService, CreateUserServiceService,],
   exports: [UserService],
   // imports: [AuthModule], //- A circular dependency
   imports: [
     forwardRef(() => AuthModule),
     TypeOrmModule.forFeature([User]),
-    ConfigModule.forFeature(jwtConfig),
-    JwtModule.registerAsync(jwtConfig.asProvider()),
   ],
 })
 export class UserModule { }

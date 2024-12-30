@@ -33,8 +33,12 @@ import { ApiTags, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import {UseGuards} from "@nestjs/common";
 import {AccessTokenGuard} from "../auth/guards/access-token.guard";
 
+import { Auth } from "../auth/decorators/auth.decorator";
+import { AuthTypeEnum } from "../auth/enums/AuthType.enum";
+
 @Controller('user')
 @ApiTags('user')
+@Auth(AuthTypeEnum.BEARER)
 export class UserController {
   constructor(@Inject() private readonly userService: UserService) { }
 
@@ -59,8 +63,8 @@ export class UserController {
     return body;
   }
 
-  @UseGuards(AccessTokenGuard)
   @Post('/create-many')
+
   public async CreateManyUsers(@Body() users: CreateManyUsersDto) {
     const createdUsers = await this.userService.createManyUsers(users);
     return createdUsers;
