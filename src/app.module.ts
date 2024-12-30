@@ -24,6 +24,8 @@ import { PaginationModule } from './common/pagination/pagination.module';
 // Configuration
 import databaseConfig from "./config/database.config";
 import appConfig from './config/app.config';
+import jwtConfig from "./auth/config/jwt.config";
+import { JwtModule } from "@nestjs/jwt";
 
 const env = process.env.NODE_ENV;
 
@@ -54,6 +56,9 @@ const env = process.env.NODE_ENV;
         database: configService.get<string>('database.name'),
       }),
     }),
+    // make configuration available in the module
+    ConfigModule.forFeature(jwtConfig),
+    JwtModule.registerAsync(jwtConfig.asProvider()),
     TagsModule,
     MetaOptionsModule,
     PaginationModule,

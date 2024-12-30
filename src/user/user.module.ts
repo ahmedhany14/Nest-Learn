@@ -22,9 +22,18 @@ import { ConfigModule } from "@nestjs/config";
 import jwtConfig from "../auth/config/jwt.config";
 import { JwtModule } from "@nestjs/jwt";
 
+// Guards
+import { APP_GUARD } from "@nestjs/core";
+import { AccessTokenGuard } from "../auth/guards/access-token.guard";
+
 @Module({
   controllers: [UserController],
-  providers: [UserService, UserCreateManyServiceService, CreateUserServiceService],
+  providers: [UserService, UserCreateManyServiceService, CreateUserServiceService,
+    { // Guard will be applied to all routes in the module
+    provide: APP_GUARD,
+    useClass: AccessTokenGuard,
+  }
+  ],
   exports: [UserService],
   // imports: [AuthModule], //- A circular dependency
   imports: [
