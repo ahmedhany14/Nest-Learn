@@ -29,6 +29,10 @@ import { UserService } from './services/user.service';
 // Swagger
 import { ApiTags, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
+// Guards
+import {UseGuards} from "@nestjs/common";
+import {AccessTokenGuard} from "../auth/guards/access-token.guard";
+
 @Controller('user')
 @ApiTags('user')
 export class UserController {
@@ -55,6 +59,7 @@ export class UserController {
     return body;
   }
 
+  @UseGuards(AccessTokenGuard)
   @Post('/create-many')
   public async CreateManyUsers(@Body() users: CreateManyUsersDto) {
     const createdUsers = await this.userService.createManyUsers(users);
