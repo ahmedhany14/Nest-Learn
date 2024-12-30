@@ -36,27 +36,30 @@ export class UserService {
     return await this.createUserServiceService.create(createUserDto);
   }
 
-  public findAll(getUserDto: GetUserParmersDto, queryDto: GetUserQueryDto) {
-    // Use of custom error
-    throw new HttpException(
-      new CustomError(
-        HttpStatus.MOVED_PERMANENTLY,
-        'Invalid query parameters',
-        'The query parameters are invalid',
-      ),
-      HttpStatus.MOVED_PERMANENTLY,
-    );
+  public async createManyUsers(users: CreateManyUsersDto) {
+    return await this.userCreateManyServiceService.createManyUsers(users);
+  }
 
-    return [
-      {
-        name: 'user 1',
-        email: 'user1@gmail.com',
-      },
-      {
-        name: 'user 2',
-        email: 'user2@gmail.com',
-      },
-    ];
+  public async findOneByEmail(email: string) {
+    let user = undefined;
+    try {
+      user = await this.userRepository.findOne({
+        where: { email },
+        select: ['id', 'email', 'password']
+      });
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'unable to process the request, try again later',
+        'The request to create a user has timed out',
+      );
+    }
+
+    if (!user)
+      throw new BadRequestException('User not found', {
+        description: 'The user with the given id was not found',
+      });
+
+    return user;
   }
 
   public async findOnebyId(id: number) {
@@ -80,7 +83,17 @@ export class UserService {
     return user;
   }
 
-  public async createManyUsers(users: CreateManyUsersDto) {
-    return await this.userCreateManyServiceService.createManyUsers(users);
+
+  public findAll(getUserDto: GetUserParmersDto, queryDto: GetUserQueryDto) {
+    // Use of custom error
+    throw new HttpException(
+      new CustomError(
+        HttpStatus.MOVED_PERMANENTLY,
+        'Invalid query parameters',
+        'The query parameters are invalid',
+      ),
+      HttpStatus.MOVED_PERMANENTLY,
+    );
   }
+
 }
