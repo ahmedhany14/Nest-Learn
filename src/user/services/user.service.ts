@@ -9,12 +9,15 @@ import { User } from '../entite/user.entitie';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
+import { CreateManyUsersDto } from '../dto/create-many-users.dto';
 
 // Exceptions
 import { BadRequestException, RequestTimeoutException } from '@nestjs/common';
 import { CustomError } from '../../common/custom.error';
+
+// Services
 import { UserCreateManyServiceService } from './user-create-many.service.service';
-import { CreateManyUsersDto } from '../dto/create-many-users.dto';
+import { CreateUserServiceService } from './create-user.service.service';
 
 @Injectable()
 export class UserService {
@@ -24,39 +27,13 @@ export class UserService {
 
     @Inject()
     private readonly userCreateManyServiceService: UserCreateManyServiceService,
+
+    @Inject()
+    private readonly createUserServiceService: CreateUserServiceService,
   ) { }
 
   public async create(createUserDto: CreateUserDto) {
-    let user = undefined;
-    try {
-      user = await this.userRepository.findOne({
-        where: { email: createUserDto.email },
-      });
-    } catch (error) {
-      throw new RequestTimeoutException(
-        'Request timeout',
-        'The request to create a user has timed out',
-      );
-    }
-    if (user)
-      throw new BadRequestException('User already exists', {
-        description: 'The email is already in use',
-      });
-
-    let newUser = this.userRepository.create(createUserDto);
-
-    try {
-      newUser = await this.userRepository.save(newUser);
-    } catch (error) {
-      throw new RequestTimeoutException(
-        'unable to process the request, try again later',
-        {
-          description: 'The user could not be created',
-        },
-      );
-    }
-
-    return newUser;
+    return await this.createUserServiceService.create(createUserDto);
   }
 
   public findAll(getUserDto: GetUserParmersDto, queryDto: GetUserQueryDto) {

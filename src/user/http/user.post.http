@@ -1,11 +1,11 @@
 ### Add New User
 
-POST http://localhost:3000/user
+POST http://localhost:5000/user
 Content-Type: application/json
 
 {
-  "name": "Ahmed Hany4",
-  "email": "ah5@gmail.com",
+  "name": "Ahmed hany",
+  "email": "ah40@gmail.com",
   "password": "12345678"
 }
 

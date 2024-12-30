@@ -13,10 +13,11 @@ import { AuthModule } from '../auth/auth.module';
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from './entite/user.entitie';
 import { UserCreateManyServiceService } from './services/user-create-many.service.service';
+import { CreateUserServiceService } from './services/create-user.service.service';
 
 @Module({
   controllers: [UserController],
-  providers: [UserService, UserCreateManyServiceService],
+  providers: [UserService, UserCreateManyServiceService, CreateUserServiceService],
   exports: [UserService],
   // imports: [AuthModule], //- A circular dependency
   imports: [forwardRef(() => AuthModule), TypeOrmModule.forFeature([User])],
