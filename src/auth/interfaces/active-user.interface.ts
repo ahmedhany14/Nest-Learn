@@ -1,4 +1,4 @@
 export interface ActiveUserInterface{
-  id: string;
+  id: number;
   email: string;
 }

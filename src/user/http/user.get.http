@@ -1,3 +1,4 @@
 ### GET Users
 
 GET http://localhost:4000/user/10?page=10&limit=10
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjksImVtYWlsIjoiYWhAZ21haWwuY29tIiwiaWF0IjoxNzM1NjQ5MTI0LCJleHAiOjE3MzU2NTI3MjQsImF1ZCI6ImxvY2FsaG9zdDo0MDAwIiwiaXNzIjoibG9jYWxob3N0OjQwMDAifQ.OoABnKDfF2mXgxOeaSptG3MOjL3R0ObZipuYtVOMM1M

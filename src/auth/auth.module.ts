@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { BcryptProvider } from './service/bcrypt.provider';
 import { Hashing } from './service/hashing.provider';
 import { AuthService } from './service/auth.service';
+import { TokenService } from './service/token.service';
 
 // configurations
 import jwtConfig from './config/jwt.config';
@@ -22,6 +23,7 @@ import jwtConfig from './config/jwt.config';
       provide: Hashing,
       useClass: BcryptProvider,
     },
+    TokenService,
   ],
   exports: [AuthService, Hashing],
   imports: [
