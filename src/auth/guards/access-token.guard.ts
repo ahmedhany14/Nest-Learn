@@ -1,4 +1,3 @@
-
 import {
   CanActivate,
   ExecutionContext,
@@ -9,16 +8,14 @@ import {
 
 import { Request } from 'express';
 
-import { JwtService } from '@nestjs/jwt';
-import { ConfigType } from '@nestjs/config';
-import jwtConfig from '../config/jwt.config';
+import { TokenService } from '../service/token.service';
+import { ActiveUserInterface } from '../interfaces/active-user.interface';
 
 @Injectable()
 export class AccessTokenGuard implements CanActivate {
   constructor(
-    private readonly jwtService: JwtService,
-    @Inject(jwtConfig.KEY)
-    private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
+    @Inject()
+    private readonly tokenService: TokenService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -32,10 +29,8 @@ export class AccessTokenGuard implements CanActivate {
     }
 
     try {
-      request.user = await this.jwtService.verifyAsync(
-        token,
-        this.jwtConfiguration,
-      );
+      request.user =
+        await this.tokenService.verifyToken<ActiveUserInterface>(token);
     } catch (error) {
       throw new UnauthorizedException(
         'You are not authorized to access this resource',

@@ -32,6 +32,7 @@ import validationSchema from "./config/env.validation";
 import { APP_GUARD } from "@nestjs/core";
 import { AccessTokenGuard } from "./auth/guards/access-token.guard";
 import { AuthenticationGuard } from "./auth/guards/authentication.guard";
+import { TokenService } from "./auth/service/token.service";
 
 const env = process.env.NODE_ENV;
 
@@ -77,7 +78,8 @@ const env = process.env.NODE_ENV;
       provide: APP_GUARD,
       useClass: AuthenticationGuard,
     },
-    AccessTokenGuard
+    AccessTokenGuard,
+    TokenService
   ],
 })
 export class AppModule {}
