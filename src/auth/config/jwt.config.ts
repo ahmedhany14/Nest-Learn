@@ -1,5 +1,4 @@
 import {registerAs}  from "@nestjs/config";
-import * as process from "node:process";
 
 export default registerAs('jwt', () => ({
   secret: process.env.JWT_SECRET,
@@ -7,4 +6,6 @@ export default registerAs('jwt', () => ({
   audience: process.env.JWT_TOKEN_AUDIENCE,
   issuer: process.env.JWT_TOKEN_ISSUER,
   refreshToken: parseInt(process.env.JWT_REFRESH_EXPIRES_IN ?? '86000', 10),
+  googleClientId: process.env.GOOGLE_CLIENT_ID,
+  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
 }));
