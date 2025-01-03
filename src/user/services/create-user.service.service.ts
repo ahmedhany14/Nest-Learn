@@ -47,7 +47,6 @@ export class CreateUserServiceService {
       password: await this.hashing.hash(createUserDto.password),
     });
 
-    console.log('newUser:', newUser);
     try {
       newUser = await this.userRepository.save(newUser);
     } catch (error) {
@@ -58,7 +57,6 @@ export class CreateUserServiceService {
         },
       );
     }
-    delete newUser.password;
     return newUser;
   }
 

@@ -10,6 +10,7 @@ import {
 // entity
 
 import { Post } from "../../post/entitie/post.entitie";
+import { Exclude } from "class-transformer";
 
 @Entity()
 export class User {
@@ -37,12 +38,14 @@ export class User {
         nullable: true,
         select: false
     })
+    @Exclude() // this decorator will exclude the password from the response
     password?: string
 
     @Column({
         type: 'varchar',
         nullable: true
     })
+    @Exclude() // this decorator will exclude the googleId from the response
     googleId?: string
 
     @OneToMany(() => Post, post => post.author)

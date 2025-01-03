@@ -1,5 +1,5 @@
 // Guards
-import { Body, Controller, Get, Inject, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, ClassSerializerInterceptor, Controller, Get, Inject, Param, Patch, Post, Query, UseInterceptors, } from "@nestjs/common";
 
 // DTO
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -36,6 +36,7 @@ export class UserController {
 
   @Post()
   @Auth(AuthTypeEnum.NONE)
+  @UseInterceptors(ClassSerializerInterceptor) // will exclude any property with @Exclude() decorator from the response
   public async CreateUser(@Body() createUserDto: CreateUserDto) {
     const user = await this.userService.create(createUserDto);
     return user;
