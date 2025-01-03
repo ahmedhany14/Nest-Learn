@@ -1,37 +1,19 @@
-import {
-  Controller,
-  Get,
-  Patch,
-  Post,
-  Body,
-  Param,
-  Query,
-  ParseIntPipe, // for converting string to integer
-  DefaultValuePipe, // for default value
-  ParseArrayPipe, // for converting string to array
-  ParseBoolPipe, // for converting string to boolean
-  ParseEnumPipe, // for converting string to enum
-} from '@nestjs/common';
-
-import { Inject } from '@nestjs/common';
+// Guards
+import { Body, Controller, Get, Inject, Param, Patch, Post, Query } from "@nestjs/common";
 
 // DTO
-import { CreateUserDto } from './dto/create-user.dto';
-import { GetUserParmersDto } from './dto/get-user-parmers.dto';
-import { GetUserQueryDto } from './dto/get-user-query.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateManyUsersDto } from './dto/create-many-users.dto';
+import { CreateUserDto } from "./dto/create-user.dto";
+import { GetUserParmersDto } from "./dto/get-user-parmers.dto";
+import { GetUserQueryDto } from "./dto/get-user-query.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { CreateManyUsersDto } from "./dto/create-many-users.dto";
 
 // Service
-import { UserService } from './services/user.service';
+import { UserService } from "./services/user.service";
 
 
 // Swagger
-import { ApiTags, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
-
-// Guards
-import {UseGuards} from "@nestjs/common";
-import {AccessTokenGuard} from "../auth/guards/access-token.guard";
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 import { Auth } from "../auth/decorators/auth.decorator";
 import { AuthTypeEnum } from "../auth/enums/AuthType.enum";
@@ -53,6 +35,7 @@ export class UserController {
   }
 
   @Post()
+  @Auth(AuthTypeEnum.NONE)
   public async CreateUser(@Body() createUserDto: CreateUserDto) {
     const user = await this.userService.create(createUserDto);
     return user;
@@ -64,7 +47,6 @@ export class UserController {
   }
 
   @Post('/create-many')
-
   public async CreateManyUsers(@Body() users: CreateManyUsersDto) {
     const createdUsers = await this.userService.createManyUsers(users);
     return createdUsers;

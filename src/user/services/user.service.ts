@@ -3,6 +3,7 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 // Dto
 import { GetUserQueryDto } from '../dto/get-user-query.dto';
 import { GetUserParmersDto } from '../dto/get-user-parmers.dto';
+import { CreateGoogleUsersDto } from "../dto/create-google.users.dto";
 
 // Repository
 import { User } from '../entite/user.entitie';
@@ -34,6 +35,10 @@ export class UserService {
 
   public async create(createUserDto: CreateUserDto) {
     return await this.createUserServiceService.create(createUserDto);
+  }
+
+  public async createGoogleUser(createGoogleUserDto: CreateGoogleUsersDto) {
+    return await this.createUserServiceService.createGoogleUser(createGoogleUserDto);
   }
 
   public async createManyUsers(users: CreateManyUsersDto) {
@@ -83,6 +88,20 @@ export class UserService {
     return user;
   }
 
+  public async findOneByGoogleId(googleId: string) {
+    let user = undefined;
+    try {
+      user = await this.userRepository.findOne({
+        where: { googleId },
+      });
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'unable to process the request, try again later',
+        'The request to create a user has timed out',
+      );
+    }
+    return user;
+  }
 
   public findAll(getUserDto: GetUserParmersDto, queryDto: GetUserQueryDto) {
     // Use of custom error
