@@ -17,4 +17,9 @@ export default Joi.object({
   JWT_TOKEN_ISSUER: Joi.string().required(),
   GOOGLE_CLIENT_ID: Joi.string().required(),
   GOOGLE_CLIENT_SECRET: Joi.string().required(),
+
+  MAILER_HOST: Joi.string().required(),
+  MAILER_PORT: Joi.number().port().required(),
+  MAILER_USER: Joi.string().required(),
+  MAILER_PASSWORD: Joi.string().required(),
 });

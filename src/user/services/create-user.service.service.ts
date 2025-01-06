@@ -13,8 +13,11 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { User } from '../entite/user.entitie';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Hashing } from 'src/auth/service/hashing.provider';
 import { CreateGoogleUsersDto } from '../dto/create-google.users.dto';
+
+// Service
+import { MailService } from 'src/mail/service/mail.service';
+import { Hashing } from 'src/auth/service/hashing.provider';
 
 @Injectable()
 export class CreateUserServiceService {
@@ -23,7 +26,9 @@ export class CreateUserServiceService {
     private readonly userRepository: Repository<User>,
     @Inject(forwardRef(() => Hashing))
     private readonly hashing: Hashing,
-  ) {}
+    @Inject()
+    private readonly mailService: MailService,
+  ) { }
 
   public async create(createUserDto: CreateUserDto) {
     let user = undefined;
@@ -57,6 +62,9 @@ export class CreateUserServiceService {
         },
       );
     }
+    console.log('send email')
+    await this.mailService.sendWelcomeMail(newUser);
+
     return newUser;
   }
 
