@@ -29,10 +29,11 @@ import { JwtModule } from "@nestjs/jwt";
 import validationSchema from "./config/env.validation";
 
 // Guards
-import { APP_GUARD } from "@nestjs/core";
+import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
 import { AccessTokenGuard } from "./auth/guards/access-token.guard";
 import { AuthenticationGuard } from "./auth/guards/authentication.guard";
 import { TokenService } from "./auth/service/token.service";
+import { DataResponceInterceptor } from "./common/interceptors/data-responce.interceptor";
 
 const env = process.env.NODE_ENV;
 
@@ -77,6 +78,10 @@ const env = process.env.NODE_ENV;
     {
       provide: APP_GUARD,
       useClass: AuthenticationGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DataResponceInterceptor,
     },
     AccessTokenGuard,
     TokenService
