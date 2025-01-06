@@ -14,16 +14,17 @@ import { join } from 'path';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         transport: {
-          host: configService.get('appConfig.mailHost'),
+          host: configService.get<string>('appConfig.mailHost'),
+          port: configService.get<number>('appConfig.mailPort'),
           secure: false,
-          port: configService.get('appConfig.mailPort'),
+          
           auth: {
-            user: configService.get('appConfig.mailUser'),
-            pass: configService.get('appConfig.mailPassword')
+            user: configService.get(<string>'appConfig.mailUser'),
+            pass: configService.get<string>('appConfig.mailPassword')
           }
         },
         defaults: {
-          from: `no reply <no-reply>`
+          from: `"No Reply" <${configService.get<string>('appConfig.mailUser')}>`,
         },
         template: {
           dir: join(__dirname, 'templates'),
@@ -32,7 +33,10 @@ import { join } from 'path';
             strict: false,
           }
         },
-
+        debug: true,
+        logger: true,
+        connectionTimeout: 5000,
+        greetingTimeout: 5000,
       }),
     })
   ],

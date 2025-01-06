@@ -3,52 +3,19 @@ import { Injectable } from '@nestjs/common';
 import { User } from 'src/user/entite/user.entitie';
 import { ConfigService } from '@nestjs/config';
 
-import * as nodemailer from 'nodemailer';
 
-import { MailerModule } from '@nestjs-modules/mailer';
-import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
-
-import { join } from 'path';
-import { error } from 'console';
 
 @Injectable()
 export class MailService {
     constructor(
         private readonly mailerService: MailerService,
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
     ) { }
 
-    private createTransporter() {
-        return nodemailer.createTransport({
-            host: this.configService.get('appConfig.mailHost'),
-            port: this.configService.get('appConfig.mailPort'),
-            secure: false,
-            auth: {
-                user: this.configService.get('appConfig.mailUser'),
-                pass: this.configService.get('appConfig.mailPassword')
-            },
-            default: {
-                from: this.configService.get<string>('appConfig.mailUser'),
-            },
-            template: {
-                dir: join(__dirname, '../templates'),
-                adapter: new EjsAdapter(),
-                options: {
-                    strict: false,
-                }
-            },
-            debug: true,
-            logger: true,
-            connectionTimeout: 10000,
-            greetingTimeout: 10000
-        });
-    }
-
-    async sendWelcomeMail(user: User) {
-        const transporter = this.createTransporter();
-        await transporter.sendMail({
-            from: this.configService.get<string>('appConfig.mailUser'),
-            to: "ah7608867@gmail.com",
+    async sendWelcomeMail(user: User): Promise<void> {
+        await this.mailerService.sendMail({
+            from: `Onboarding Team<support@${this.configService.get('appConfig.mailUser')}>`,
+            to: user.email,
             subject: 'Welcome to our platform',
             template: './welcome',
             context: {
@@ -56,11 +23,10 @@ export class MailService {
                 email: user.email,
                 loginUrl: 'http://localhost:3000/login',
             },
-        }, (error, info) => {
-            if (error) {
-                console.log(error);
-            } else
-                console.log('Message sent: %s', info.messageId);
+        }).then(() => {
+            console.log('Email sent successfully');
+        }).catch((error) => {
+            console.error('Error sending email', error);
         });
     }
 }
