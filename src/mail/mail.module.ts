@@ -17,7 +17,7 @@ import { join } from 'path';
           host: configService.get<string>('appConfig.mailHost'),
           port: configService.get<number>('appConfig.mailPort'),
           secure: false,
-          
+
           auth: {
             user: configService.get(<string>'appConfig.mailUser'),
             pass: configService.get<string>('appConfig.mailPassword')
@@ -28,7 +28,9 @@ import { join } from 'path';
         },
         template: {
           dir: join(__dirname, 'templates'),
-          adapter: new EjsAdapter(),
+          adapter: new EjsAdapter({
+            inlineCssEnabled: true, // inline your css
+          }),
           options: {
             strict: false,
           }
