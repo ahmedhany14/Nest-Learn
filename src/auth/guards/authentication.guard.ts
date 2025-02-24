@@ -13,7 +13,7 @@ import { AUTH_TYPE_KEY } from '../../common/constants';
 
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
-  private static readonly defaultAuthType = AuthTypeEnum.BEARER;
+  private static readonly defaultAuthType = AuthTypeEnum.NONE;
   private readonly authTypeMap = new Map();
 
   constructor(

@@ -12,4 +12,11 @@ export default registerAs('appConfig', () => ({
   mailPort: process.env.MAILER_PORT,
   mailUser: process.env.MAILER_USER,
   mailPassword: process.env.MAILER_PASSWORD,
+
+  // aws
+  awsBucketName: process.env.AWS_PUBLIC_BUCKET_NAME,
+  awsRegion: process.env.AWS_REGION,
+  awsCloudFrontUrl: process.env.AWS_CLOUDFRONT_URL,
+  awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 }));
